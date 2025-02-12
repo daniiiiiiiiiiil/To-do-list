@@ -13,11 +13,12 @@
         android:layout_width="210dp"
         android:layout_height="76dp"
         android:text="               TO DO LIST"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.542"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="4dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="4dp" />
 
     <EditText
         android:id="@+id/email"
@@ -28,6 +29,7 @@
         android:hint="Email"
         android:inputType="text"
         android:minHeight="48dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.542"
@@ -43,11 +45,12 @@
         android:hint="password"
         android:inputType="text"
         android:minHeight="48dp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/email"
         app:layout_constraintTop_toBottomOf="@+id/email" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/registr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -55,11 +58,12 @@
         android:background="#663F3F"
         android:onClick="onClickSingUp"
         android:text="Регистрация"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/password"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/vxod"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -67,7 +71,43 @@
         android:background="#C31212"
         android:onClick="onClickSingIn"
         android:text="Вход"
-        app:layout_constraintStart_toStartOf="@+id/button3"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/registr"
+        app:layout_constraintTop_toBottomOf="@+id/registr" />
+
+    <TextView
+        android:id="@+id/tvUserEmail"
+        android:layout_width="408dp"
+        android:layout_height="147dp"
+        android:textSize="30dp"
+        android:visibility="visible"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="3dp"
+        tools:layout_editor_absoluteY="4dp" />
+
+    <Button
+        android:id="@+id/start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="404dp"
+        android:onClick="onClickStart"
+        android:text="Начать"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.568"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="320dp"
+        android:onClick="onClickSingOut"
+        android:text="Выйти из аккаунта"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.603"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
