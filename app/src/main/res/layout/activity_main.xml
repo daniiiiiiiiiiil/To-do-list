@@ -77,13 +77,13 @@
 
     <TextView
         android:id="@+id/tvUserEmail"
-        android:layout_width="408dp"
-        android:layout_height="147dp"
+        android:layout_width="316dp"
+        android:layout_height="171dp"
         android:textSize="30dp"
         android:visibility="visible"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="3dp"
-        tools:layout_editor_absoluteY="4dp" />
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="65dp" />
 
     <Button
         android:id="@+id/start"

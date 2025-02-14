@@ -26,4 +26,16 @@
         android:layout_height="wrap_content"
         android:text="Выполнено" />
 
+    <Button
+        android:id="@+id/buttonDeleteTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="OnClickDeleteTask"
+        android:text="Удалить" />
+    <Button
+        android:id="@+id/buttonupdateTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="updateTask"
+        android:text="Изменить" />
 </LinearLayout>

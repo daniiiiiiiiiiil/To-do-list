@@ -56,16 +56,20 @@ public class To_do_list extends AppCompatActivity {
 
 
     public void onCreateTaskClicked(View view) {
+        Log.d("CREATE_TASK", "onClickCreateTaskClicked called");//это добавил
         String taskName = editTextTaskName.getText().toString();
         String taskDescription = editTextTaskDescription.getText().toString();
-
-        if (!taskName.isEmpty() && !taskDescription.isEmpty()) {
-            String userId = mAuth.getCurrentUser().getUid();
-            onClickCreateTask(userId, taskName, taskDescription);
-            editTextTaskName.setText("");
-            editTextTaskDescription.setText("");
-        } else {
-            Toast.makeText(this, "Пожалуйста, заполните все поля", Toast.LENGTH_SHORT).show();
+        Log.d("CREATE_TASK", "Task name: " + taskName + ", description: " + taskDescription);//это добавил
+        if (mAuth.getCurrentUser() != null) {//это добавил
+            if (!taskName.isEmpty() && !taskDescription.isEmpty()) {
+                String userId = mAuth.getCurrentUser().getUid();
+                onClickCreateTask(userId, taskName, taskDescription);
+                editTextTaskName.setText("");
+                editTextTaskDescription.setText("");
+            } else {
+                Log.e("CREATE_TASK", "User is not logged in");//это добавил
+                Toast.makeText(this, "Пожалуйста, заполните все поля", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -94,43 +98,47 @@ public class To_do_list extends AppCompatActivity {
                 });
     }
 
-    public void getTasks(String userId) {
+    private void getTasks(String userId) {
         db.collection("tasks")
                 .whereEqualTo("userId", userId)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         taskList.clear();
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            String title = document.getString("title");
-                            String description = document.getString("description");
-                            boolean isCompleted = document.getBoolean("isCompleted");
-                            Date createdAt = document.getDate("createdAt");
-                            String taskId = document.getId();
-                            Task taskObject = new Task(taskId, userId, title, description, isCompleted, createdAt);
-                            taskList.add(taskObject);
+                        if (!task.getResult().isEmpty()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Task taskItem = document.toObject(Task.class);
+                                taskItem.setId(document.getId());
+                                taskList.add(taskItem);
+                            }
+                        } else {
+                            Log.d("GET_TASKS", "Список задач пуст");
                         }
                         taskAdapter.notifyDataSetChanged();
                     } else {
-                        Toast.makeText(this, "Ошибка при загрузке задач: " + task.getException(), Toast.LENGTH_SHORT).show();
+                        Log.e("GET_TASKS", "Ошибка при получении задач: ", task.getException());
+                        Toast.makeText(this, "Ошибка при загрузке задач: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
-
-    public void updateTask(String taskId, boolean isCompleted) {
+    public void updateTask(String taskId, boolean isCompleted, int position) {
         db.collection("tasks")
                 .document(taskId)
                 .update("isCompleted", isCompleted)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Задача обновлена!", Toast.LENGTH_SHORT).show();
-                    loadTasks();
+
+                    taskList.get(position).setCompleted(isCompleted);
+
+                    taskAdapter.notifyItemChanged(position);
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Ошибка при обновлении задачи: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 
-    public void deleteTask(String taskId) {
+    public void OnClickDeleteTask(String taskId) {
+
         db.collection("tasks")
                 .document(taskId)
                 .delete()
@@ -142,20 +150,4 @@ public class To_do_list extends AppCompatActivity {
                     Toast.makeText(this, "Ошибка при удалении задачи: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
-    public void updateTask(String taskId, boolean isCompleted, int position) {
-        db.collection("tasks")
-                .document(taskId)
-                .update("isCompleted", isCompleted)
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Задача обновлена!", Toast.LENGTH_SHORT).show();
-                    // Обновляем isCompleted в списке
-                    taskList.get(position).setCompleted(isCompleted);
-                    // Уведомляем адаптер об изменении элемента
-                    taskAdapter.notifyItemChanged(position);
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Ошибка при обновлении задачи: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
-    }
-
 }
